@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="app.css">
+    <script src="css-js/burik.js" defer></script>
+    <title>PROJECT 144p</title>
+</head>
+<body class="app">
+    <main class="conteiner">
+        <img src="assets/image/ico2.png" alt="144p" class="icon">
+
+        <nav class="nav" aria-label="Kategori tools">
+            <div class="nav-tabs" role="tablist">
+                <button class="navbar is-active" id="tab-burik" type="button" role="tab" aria-selected="true" aria-controls="panel-burik" data-tool="burik">Pemburik</button>
+                <button class="navbar" id="tab-text" type="button" role="tab" aria-selected="false" aria-controls="panel-text" data-tool="text">Tambah teks</button>
+                <button class="navbar" id="tab-transform" type="button" role="tab" aria-selected="false" aria-controls="panel-transform" data-tool="transform">Transform</button>
+            </div>
+        </nav>
+
+        <div class="window">
+            <aside class="tools" aria-label="Pengaturan gambar">
+                <h2 class="tools-text">Tools</h2>
+
+                <section class="tool-panel" id="panel-burik" role="tabpanel" aria-labelledby="tab-burik">
+                    <label class="control" for="qualitySlider">
+                        <span class="tools-btn">Burik</span>
+                        <input class="inputRange" id="qualitySlider" type="range" min="0" max="100" step="1" value="0">
+                        <output for="qualitySlider" id="qualityValue">0%</output>
+                    </label>
+                    <label class="control" for="saturationRange">
+                        <span class="tools-btn">Saturasi</span>
+                        <input class="inputRange" id="saturationRange" type="range" min="0" max="200" value="100">
+                        <output for="saturationRange" id="saturationValue">100%</output>
+                    </label>
+                    <label class="control" for="hueRange">
+                        <span class="tools-btn">Hue</span>
+                        <input class="inputRange" id="hueRange" type="range" min="0" max="360" value="0">
+                        <output for="hueRange" id="hueValue">0°</output>
+                    </label>
+                    <button class="action-btn" id="resetFilters" type="button">Reset filter</button>
+                    <p class="file-size" id="fileSizeText">Ukuran hasil: -</p>
+                </section>
+
+                <section class="tool-panel" id="panel-transform" role="tabpanel" aria-labelledby="tab-transform" hidden>
+                    <div class="transform-controls">
+                        <button class="action-btn" id="rotateLeft" type="button">Putar kiri</button>
+                        <button class="action-btn" id="rotateRight" type="button">Putar kanan</button>
+                        <button class="action-btn" id="flipHorizontal" type="button">Balik horizontal</button>
+                        <button class="action-btn" id="flipVertical" type="button">Balik vertikal</button>
+                        <button class="action-btn" id="resetTransform" type="button">Reset transformasi</button>
+                    </div>
+                </section>
+
+                <section class="tool-panel" id="panel-text" role="tabpanel" aria-labelledby="tab-text" hidden>
+                    <label class="text-control" for="captionValue">Caption di atas gambar</label>
+                    <input class="text-input" id="captionValue" type="text" maxlength="160" placeholder="Tulis caption...">
+                    <label class="text-control" for="captionSize">Ukuran caption</label>
+                    <input class="inputRange" id="captionSize" type="range" min="24" max="180" value="96">
+                    <output for="captionSize" id="captionSizeValue">96 px</output>
+                    <label class="text-control" for="textValue">Teks pada gambar</label>
+                    <input class="text-input" id="textValue" type="text" maxlength="80" placeholder="Ketik teks...">
+                    <label class="text-control" for="textPosition">Posisi teks</label>
+                    <select class="text-input" id="textPosition">
+                        <option value="top">Di atas gambar</option>
+                        <option value="center" selected>Di tengah</option>
+                        <option value="bottom">Di bawah gambar</option>
+                    </select>
+                    <label class="text-control" for="textColor">Warna teks</label>
+                    <input id="textColor" type="color" value="#ffffff">
+                    <label class="text-control" for="textSize">Ukuran teks</label>
+                    <input class="inputRange" id="textSize" type="range" min="24" max="180" value="96">
+                    <output for="textSize" id="textSizeValue">96 px</output>
+                    <button class="action-btn" id="addText" type="button">Terapkan teks</button>
+                    <button class="action-btn" id="clearText" type="button">Hapus teks</button>
+                </section>
+            </aside>
+
+            <section class="editor">
+                <h1 class="title">Website pemburik gambar online.</h1>
+                <div class="gambar" id="dropzone" aria-label="Area pratinjau gambar">
+                    <div class="post" id="uploadPrompt">
+                        <p>Choose, paste, or drag and drop a file here:</p>
+                        <button class="action-btn" id="chooseFile" type="button">choose file</button>
+                        <input id="fileInput" type="file" accept="image/*" hidden>
+                    </div>
+                    <img id="processedPreview" alt="Pratinjau hasil edit" draggable="false" hidden>
+                    <button class="remove-image-btn" id="removeImage" type="button" aria-label="Hapus gambar" title="Hapus gambar" hidden>
+                        <svg aria-hidden="true" viewBox="0 0 20 20">
+                            <path d="M5 5l10 10M15 5L5 15"></path>
+                        </svg>
+                    </button>
+                    <canvas id="imageCanvas" aria-hidden="true" hidden></canvas>
+                </div>
+                <p class="status-message" id="statusMessage" role="status" aria-live="polite"></p>
+                <button class="action-btn download-btn" id="downloadImage" type="button" disabled hidden>Unduh JPG</button>
+            </section>
+        </div>
+    </main>
+</body>
+</html>
