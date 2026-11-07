@@ -1,2 +1,2 @@
 # Project-144p
-web untuk memburikan gambar
+web untuk memburikan gambar asli
