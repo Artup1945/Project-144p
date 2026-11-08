@@ -22,10 +22,10 @@ body::before{
     z-index: -1;
     pointer-events: none; 
 
-background-color: #E5E5F7;
-opacity: 0.1;
-background-image:  repeating-linear-gradient(0deg, transparent, transparent 47px, #080808 47px, #080808 48px, transparent 48px, transparent 95px, #080808 95px, #080808 96px), repeating-linear-gradient(90deg, transparent, transparent 47px, #080808 47px, #080808 48px, transparent 48px, transparent 95px, #080808 95px, #080808 96px), radial-gradient(circle at 48px 48px, #080808 3.84px, transparent 4.34px), radial-gradient(circle at 0px 0px, #080808 2.88px, transparent 3.38px), radial-gradient(circle at 96px 0px, #080808 2.88px, transparent 3.38px), radial-gradient(circle at 0px 96px, #080808 2.88px, transparent 3.38px), radial-gradient(circle at 96px 96px, #080808 2.88px, transparent 3.38px);
-background-size: 96px 96px;
+    background-color: #E5E5F7;
+    opacity: 0.1;
+    background-image:  repeating-linear-gradient(0deg, transparent, transparent 47px, #080808 47px, #080808 48px, transparent 48px, transparent 95px, #080808 95px, #080808 96px), repeating-linear-gradient(90deg, transparent, transparent 47px, #080808 47px, #080808 48px, transparent 48px, transparent 95px, #080808 95px, #080808 96px), radial-gradient(circle at 48px 48px, #080808 3.84px, transparent 4.34px), radial-gradient(circle at 0px 0px, #080808 2.88px, transparent 3.38px), radial-gradient(circle at 96px 0px, #080808 2.88px, transparent 3.38px), radial-gradient(circle at 0px 96px, #080808 2.88px, transparent 3.38px), radial-gradient(circle at 96px 96px, #080808 2.88px, transparent 3.38px);
+    background-size: 96px 96px;
 }
 
 li {
@@ -490,4 +490,15 @@ li {
         padding: 16px 10px;
         font-size: 0.9rem;
     }
+}
+
+footer {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin-right: 15px;
+}
+
+footer i{
+    font-size: 2rem;
 }
