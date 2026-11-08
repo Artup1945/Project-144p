@@ -103,6 +103,43 @@ function getTextScale(scale) {
     return scale * getImageDimensions().width / 800;
 }
 
+function wrapTextLines(targetContext, text, maxWidth) {
+    const lines = [];
+    let line = "";
+
+    for (const word of text.split(/\s+/)) {
+        let remaining = word;
+        while (remaining) {
+            const candidate = line ? `${line} ${remaining}` : remaining;
+            if (targetContext.measureText(candidate).width <= maxWidth) {
+                line = candidate;
+                break;
+            }
+            if (line) {
+                lines.push(line);
+                line = "";
+                continue;
+            }
+
+            let chunk = "";
+            for (const character of remaining) {
+                if (chunk && targetContext.measureText(`${chunk}${character}`).width > maxWidth) {
+                    lines.push(chunk);
+                    chunk = "";
+                }
+                chunk += character;
+            }
+            line = chunk;
+            break;
+        }
+    }
+
+    if (line) {
+        lines.push(line);
+    }
+    return lines;
+}
+
 function getCaptionLayout(targetContext, width, scale) {
     const text = controls.caption.value.trim();
     if (!text) {
@@ -114,21 +151,7 @@ function getCaptionLayout(targetContext, width, scale) {
     const paddingY = fontSize * 0.4;
     const lineHeight = fontSize * 1.2;
     targetContext.font = `900 ${fontSize}px Arial, Helvetica, sans-serif`;
-    const lines = [];
-    let line = "";
-
-    for (const word of text.split(/\s+/)) {
-        const candidate = line ? `${line} ${word}` : word;
-        if (line && targetContext.measureText(candidate).width > width - paddingX * 2) {
-            lines.push(line);
-            line = word;
-        } else {
-            line = candidate;
-        }
-    }
-    if (line) {
-        lines.push(line);
-    }
+    const lines = wrapTextLines(targetContext, text, width - paddingX * 2);
 
     return {
         lines,
@@ -179,24 +202,43 @@ function drawComposition(targetContext, width, imageHeight, scale) {
     targetContext.restore();
 
     if (appliedText && controls.text.value.trim()) {
-        const fontSize = Number(controls.textSize.value) * getTextScale(scale);
-        const margin = fontSize * 0.75;
-        const textY = controls.textPosition.value === "top"
-            ? caption.height + margin
-            : controls.textPosition.value === "bottom"
-                ? caption.height + imageHeight - margin
-                : caption.height + imageHeight / 2;
+        let fontSize = Number(controls.textSize.value) * getTextScale(scale);
         const label = controls.text.value.trim();
+        const maxTextWidth = width * 0.9;
         targetContext.save();
-        targetContext.font = `bold ${fontSize}px Arial, sans-serif`;
         targetContext.textAlign = "center";
         targetContext.textBaseline = "middle";
         targetContext.lineJoin = "round";
-        targetContext.lineWidth = Math.max(2, fontSize / 12);
         targetContext.strokeStyle = "rgba(0, 0, 0, 0.7)";
         targetContext.fillStyle = controls.textColor.value;
-        targetContext.strokeText(label, width / 2, textY, width * 0.9);
-        targetContext.fillText(label, width / 2, textY, width * 0.9);
+        let lines;
+        let margin;
+        let lineHeight;
+        let lineWidth;
+        for (;;) {
+            targetContext.font = `bold ${fontSize}px Arial, sans-serif`;
+            lines = wrapTextLines(targetContext, label, maxTextWidth);
+            lineWidth = Math.max(2, fontSize / 12);
+            margin = fontSize * 0.75 + lineWidth / 2;
+            lineHeight = fontSize * 1.2;
+            const textHeight = lines.length * lineHeight;
+            if (textHeight + margin * 2 <= imageHeight) {
+                break;
+            }
+            fontSize *= imageHeight / (textHeight + margin * 2) * 0.98;
+        }
+        targetContext.lineWidth = lineWidth;
+        const textHeight = lines.length * lineHeight;
+        const firstLineY = controls.textPosition.value === "top"
+            ? caption.height + margin + lineHeight / 2
+            : controls.textPosition.value === "bottom"
+                ? caption.height + imageHeight - margin - textHeight + lineHeight / 2
+                : caption.height + (imageHeight - textHeight) / 2 + lineHeight / 2;
+        lines.forEach((line, index) => {
+            const textY = firstLineY + index * lineHeight;
+            targetContext.strokeText(line, width / 2, textY, maxTextWidth);
+            targetContext.fillText(line, width / 2, textY, maxTextWidth);
+        });
         targetContext.restore();
     }
 
