@@ -1,5 +1,5 @@
 # Project-144p
-### [↪ link to website](https://artup1945.github.io/Project-144p/)
+### [link to website](https://artup1945.github.io/Project-144p/)
 web untuk memburikan gambar.
 
 | Before | After |
